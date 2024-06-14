@@ -1,0 +1,21 @@
+#spring:
+#  datasource:
+#    url: jdbc:dm://172.16.8.215:30706
+#    username: SYSDBA
+#    password: SYSDBA
+#    driver-class-name: dm.jdbc.driver.DmDriver
+#  main:
+#    banner-mode: off
+
+
+spring:
+  main:
+    banner-mode: off
+
+mybatis-plus:
+  global-config:
+    banner: off
+
+logging:
+  level:
+    root: off
