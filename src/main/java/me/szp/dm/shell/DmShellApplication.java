@@ -1,21 +1,38 @@
 package me.szp.dm.shell;
 
-import com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceAutoConfigure;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.util.StringUtils;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
+@SpringBootApplication
 public class DmShellApplication {
     public static void main(String[] args) {
 
-//        if (args.length != 2) {
-//            throw new IllegalArgumentException("参数不正确");
-//        }
+        String user = null;
+        String password = null;
 
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            if ("-u".equals(arg)) {
+                user = args[i + 1];
+            }
+            if ("-p".equals(arg)) {
+                password = args[i + 1];
+            }
+        }
+
+        if (!StringUtils.hasText(user)) {
+            System.err.println("require username");
+            return;
+        }
+        if (!StringUtils.hasText(password)) {
+            System.err.println("require password");
+            return;
+        }
         new SpringApplicationBuilder(DmShellApplication.class)
-//                .properties("spring.datasource.host=" + args[0])
-//                .properties("spring.datasource.port=" + args[1])
+                .properties(String.format("spring.datasource.url=jdbc:dm://%s:%s", args[0], args[1]))
+                .properties("spring.datasource.username=" + user)
+                .properties("spring.datasource.password=" + password)
                 .run();
     }
 

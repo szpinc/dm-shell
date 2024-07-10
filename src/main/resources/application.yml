@@ -1,21 +1,20 @@
-#spring:
-#  datasource:
+spring:
+  datasource:
 #    url: jdbc:dm://172.16.8.215:30706
 #    username: SYSDBA
 #    password: SYSDBA
-#    driver-class-name: dm.jdbc.driver.DmDriver
-#  main:
-#    banner-mode: off
-
-
-spring:
+    driver-class-name: dm.jdbc.driver.DmDriver
+    druid:
+      validation-query: SELECT 'x' from dual
   main:
     banner-mode: off
 
 mybatis-plus:
   global-config:
     banner: off
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
 
 logging:
   level:
-    root: off
+    root: error

@@ -3,13 +3,23 @@ package me.szp.dm.shell;
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.jdbc.ScriptRunner;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import javax.sql.DataSource;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +31,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SelectCommand {
 
-    @Setter
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     private final Environment environment;
 
@@ -38,8 +47,9 @@ public class SelectCommand {
         druidDataSource.setPassword(password);
         druidDataSource.setDriverClassName("dm.jdbc.driver.DmDriver");
 
-        setDataSource(druidDataSource);
+        // setDataSource(druidDataSource);
     }
+
 
     @ShellMethod("查询")
     public String select(@ShellOption(arity = 9999, defaultValue = "") String... cmd) {
